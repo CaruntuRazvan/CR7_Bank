@@ -1,3 +1,3 @@
 # CR7_Bank
 
-TOOK HER TO THE O
+TODO
