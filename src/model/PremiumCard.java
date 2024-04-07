@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CardType;
+
 public class PremiumCard extends Card {
     private double savings;
     private double balanceInEUR;
@@ -18,27 +22,36 @@ public class PremiumCard extends Card {
         this.balance -= amount;
     }
 
-    public String getSavingsBalance() {
-        String savingsBalance = "Informații despre savings:\n";
-        savingsBalance += "Savings: " + this.savings + " RON\n";
-        return savingsBalance;
+    public void displaySavingsBalance() {
+        System.out.println("Informații despre economii:");
+        System.out.println("Economii: " + this.savings + " RON\n");
     }
+
     public void addToBalanceInEUR(double amountInEUR) {
         balanceInEUR += amountInEUR;
     }
+    public void addToBalance(double amountInRon){
+        balance += amountInRon;
+    }
+
 
     // Metodă pentru a obține balanța euro
     public double getBalanceInEUR() {
         return balanceInEUR;
     }
-    public double convertToEUR(double amountInRON) {
+
+    public void setBalanceInEUR(double balanceInEUR) {
+        this.balanceInEUR = balanceInEUR;
+    }
+
+    public double convertRONToEUR(double amountInRON) {
 
         double exchangeRate = 4.9;
         // Adăugăm o taxă de conversie de 1%
         double conversionFee = 0.01;
         return (amountInRON / exchangeRate) * (1 - conversionFee);
     }
-    public double convertFromEUR(double amountInEUR) {
+    public double convertEURToRon(double amountInEUR) {
 
         double exchangeRate = 4.9;
         // Adăugăm o taxă de conversie de 1%
@@ -51,9 +64,29 @@ public class PremiumCard extends Card {
             System.out.println("Eroare: Balanța RON este insuficientă.");
             return;
         }
-        double amountInEUR = convertToEUR(amountInRON);
+        double amountInEUR = convertRONToEUR(amountInRON);
         addToBalanceInEUR(amountInEUR);
         setBalance(getBalance() - amountInRON);
     }
+    public void transferEURtoRON(double amountInEUR) {
+        if (amountInEUR > getBalanceInEUR()) {
+            System.out.println("Eroare: Balanța EUR este insuficientă.");
+            return;
+        }
+        double amountInRON = convertEURToRon(amountInEUR);
+        addToBalance(amountInRON);
+        setBalanceInEUR(getBalanceInEUR() - amountInEUR);
+    }
+
+    public void displayBalanceInRON() {
+        String formattedBalanceInRON = String.format("%.2f", this.getBalance());
+        System.out.println("Balanta RON : " + formattedBalanceInRON + " RON\n");
+    }
+
+    public void displayBalanceInEUR() {
+        String formattedBalanceInEUR = String.format("%.2f", this.getBalanceInEUR());
+        System.out.println("Balanta EUR : " + formattedBalanceInEUR + " EUR\n");
+    }
+
 
 }

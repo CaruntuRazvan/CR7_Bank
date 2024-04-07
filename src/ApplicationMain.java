@@ -1,3 +1,12 @@
+import model.Card;
+import model.enums.CardType;
+import model.PremiumCard;
+import model.User;
+
+//TODO - impartire in clase service si apoi apelarea lor in main
+//TODO - modularizare cod in main
+
+
 public class ApplicationMain {
     public static void main(String[] args) {
         // Creăm un utilizator pentru testare
@@ -11,53 +20,44 @@ public class ApplicationMain {
         } else {
             System.out.println("Autentificare eșuată. Nume de utilizator sau parolă incorectă.");
         }
-        /*
-        System.out.println("Carduri asociate:");
-        for (Card card : user.getCards()) {
-            System.out.println("- Tip: " + card.getType());
-        }
-        */
+
         Card standardCard = new Card(CardType.STANDARD);
         PremiumCard premiumCard = new PremiumCard(CardType.PREMIUM);
 
         user.addCard(standardCard);
         user.addCard(premiumCard);
-
-        System.out.println("Carduri asociate:");
-        for (Card card : user.getCards()) {
-            System.out.println("- " + card.getType());
-        }
+        user.displayCards();
 
         int chosenCardIndex = 0; // presupunem că utilizatorul a ales primul card din listă
         Card chosenCard = user.interactWithCard(chosenCardIndex);
         System.out.println("Ai ales să interacționezi cu cardul: " + chosenCard.getType());
-        // Afișarea informațiilor despre cardul ales
-        System.out.println(chosenCard.getCardInfo());
+        chosenCard.displayCardInfo();
         //Informatii dupa ce am adaugat si retras sume de bani
         chosenCard.deposit(100);
         chosenCard.withdraw(20);
-        System.out.println(chosenCard.getCardInfo());
+        chosenCard.displayCardInfo();
         //afisare istoric tranzactii
         chosenCard.displayTransactions();
 
         //transferam bani la cardul premium
         chosenCard.transferMoney(premiumCard, 50);
-        System.out.println(chosenCard.getCardInfo());
-        int chosenCardIndex2 = 1; // presupunem că utilizatorul a ales primul card din listă
+        chosenCard.displayCardInfo();
 
+        int chosenCardIndex2 = 1; // presupunem că utilizatorul a ales al doilea card din listă
         PremiumCard chosenCard2 = (PremiumCard) user.interactWithCard(chosenCardIndex2);
-        System.out.println(chosenCard2.getCardInfo());
+        System.out.println("Ai ales să interacționezi cu cardul: " + chosenCard2.getType());
+        chosenCard2.displayCardInfo();
 
         chosenCard2.addToSavings(4);
-        System.out.println(chosenCard2.getSavingsBalance());
-        /*
-        System.out.println("Balanța RON : " + chosenCard2.getBalance() + " RON");
-        System.out.println("Balanța EUR : " + chosenCard2.getBalanceInEUR() + " EUR");
+        chosenCard2.displaySavingsBalance();
 
         premiumCard.transferRONtoEUR(20);
-        System.out.println("Balanța RON dupa convertire: " + chosenCard2.getBalance() + " RON");
-        System.out.println("Balanța EUR dupa convertire: " + chosenCard2.getBalanceInEUR() + " EUR");
-        */
+        premiumCard.displayBalanceInRON();
+        premiumCard.displayBalanceInEUR();
+        premiumCard.transferEURtoRON(2);
+        premiumCard.displayBalanceInRON();
+        premiumCard.displayBalanceInEUR();
+
 
     }
 }

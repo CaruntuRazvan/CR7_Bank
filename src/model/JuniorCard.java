@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CardType;
+
 public class JuniorCard extends Card {
     private double spendingLimit;
 

@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.TransactionType;
+
 import java.time.LocalDateTime;
 
 public class Transaction {

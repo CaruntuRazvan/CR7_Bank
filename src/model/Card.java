@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CardType;
+import model.enums.TransactionType;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -110,21 +114,24 @@ public class Card {
             System.out.println("Transferul de bani nu a putut fi efectuat. Verificați suma introdusă și/sau soldul disponibil pe card.");
         }
     }
-
-    public String getCardInfo() {
-        String currency;
+    public void displayCardInfo() {
+        String currencySymbol;
         if ("RON".equals(this.currency)) {
-            currency = " RON";
+            currencySymbol = "RON";
         } else if ("EURO".equals(this.currency)) {
-            currency = " EURO";
+            currencySymbol = "EURO";
+        } else {
+            currencySymbol = ""; // poți adăuga alte valute în viitor
         }
-        String cardInfo = "Informații despre card:\n";
-        cardInfo += "Numar: " + this.cardNumber + "\n";
-        cardInfo += "Expirare: " + this.expirationDate + "\n";
-        cardInfo += "CVV: " + this.CVV + "\n";
-        cardInfo += "Balanta: " + this.balance +  this.currency + "\n";
-        return cardInfo;
+
+        System.out.println("Informații despre card:");
+        System.out.println("Numar: " + this.cardNumber);
+        System.out.println("Expirare: " + this.expirationDate);
+        System.out.println("CVV: " + this.CVV);
+        System.out.println("Balanta: " + this.balance + " " + currencySymbol);
+        System.out.println();
     }
+
     public void displayTransactions() {
         //afiseaza de la cel mai actual la cel mai vechi
         transactions.sort(Comparator.comparing(Transaction::getTimestamp).reversed());

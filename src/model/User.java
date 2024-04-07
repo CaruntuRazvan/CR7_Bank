@@ -1,3 +1,7 @@
+package model;
+
+import model.enums.CardType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +59,11 @@ public class User {
         return cards.get(index);
 
     }
-
+    public void displayCards() {
+        System.out.println("Carduri asociate:");
+        for (Card card : cards) {
+            System.out.println("- " + card.getType());
+        }
+        System.out.println();
+    }
 }
