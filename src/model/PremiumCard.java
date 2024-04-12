@@ -5,18 +5,27 @@ import model.enums.CardType;
 public class PremiumCard extends Card {
     private double savings;
     private double balanceInEUR;
+    private boolean roundingEnabled;
 
     // Constructor
     public PremiumCard(CardType type) {
         super(type); // Apelăm constructorul clasei de bază
         this.savings = 0.0;
         this.balanceInEUR = 0.0;
+        this.roundingEnabled = false;
     }
 
     public double getSavings() {
         return savings;
     }
+    public void enableRounding() {
+        this.roundingEnabled = true;
+    }
 
+    // Metoda pentru dezactivarea funcționalității de rotunjire automată
+    public void disableRounding() {
+        this.roundingEnabled = false;
+    }
     public void addToSavings(double amount) {
         this.savings += amount;
         this.balance -= amount;
@@ -86,6 +95,19 @@ public class PremiumCard extends Card {
     public void displayBalanceInEUR() {
         String formattedBalanceInEUR = String.format("%.2f", this.getBalanceInEUR());
         System.out.println("Balanta EUR : " + formattedBalanceInEUR + " EUR\n");
+    }
+    //pentru rotunjire automata
+    @Override
+    public void deposit(double amount) {
+        if (roundingEnabled) {
+            double roundedAmount = Math.floor(amount);
+            double fractionalPart = amount - roundedAmount;
+
+            super.deposit(roundedAmount);
+            addToSavings(fractionalPart);
+        } else {
+            super.deposit(amount);
+        }
     }
 
 

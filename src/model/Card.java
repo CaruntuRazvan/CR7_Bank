@@ -17,6 +17,7 @@ public class Card {
     protected double balance;
 
     private List<Transaction> transactions;
+    private List<Transfer> transfers;
     public Card(CardType type) {
         this.type = type;
         this.cardNumber = generateCardNumber();
@@ -27,6 +28,7 @@ public class Card {
         this.balance = 0.0;
         this.currency = "RON";
         this.transactions = new ArrayList<>();
+        this.transfers = new ArrayList<>();
 
     }
     public void setCardNumber(String cardNumber) {
@@ -114,6 +116,13 @@ public class Card {
             System.out.println("Transferul de bani nu a putut fi efectuat. Verificați suma introdusă și/sau soldul disponibil pe card.");
         }
     }
+    public void performTransfer(Card destinationCard, double amount) {
+        Transfer transfer = new Transfer(this, destinationCard, amount);
+        this.transferMoney(destinationCard, amount);
+        this.addTransfer(transfer);
+        destinationCard.addTransfer(transfer);
+    }
+
     public void displayCardInfo() {
         String currencySymbol;
         if ("RON".equals(this.currency)) {
@@ -145,6 +154,28 @@ public class Card {
             System.out.println(); // pt claritate
         }
     }
+
+    public void addTransfer(Transfer transfer) {
+        transfers.add(transfer);
+    }
+
+    public List<Transfer> getTransfers() {
+        return transfers;
+    }
+    public void displayTransfers() {
+        transfers.sort(Comparator.comparing(Transfer::getTimestamp).reversed());
+        System.out.println("Istoric transferuri:");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        for (Transfer transfer : transfers) {
+            String formattedDateTime = transfer.getTimestamp().format(formatter);
+            System.out.println("De la cardul " + transfer.getSourceCard().getType() + " cu numarul " + transfer.getSourceCard().getCardNumber() + " la cardul " + transfer.getDestinationCard().getType() + " cu numarul " + transfer.getDestinationCard().getCardNumber());
+            System.out.println("Suma: " + transfer.getAmount());
+            System.out.println("Data: " + formattedDateTime);
+            System.out.println(); // pt claritate
+        }
+    }
+
     public void blockCard() {
         isBlocked = true;
     }
